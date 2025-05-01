@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="login.html">Login</a>
+    <a href="signup.html">Signup</a>
+    <a href="post.html">Create Post</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+  <div class="container">
+    <h1>Blog Posts</h1>
+    <div id="posts"></div>
+    <script>
+      async function fetchPosts() {
+        const response = await fetch('http://localhost:3000/api/posts');
+        const posts = await response.json();
+        const postsDiv = document.getElementById('posts');
+        postsDiv.innerHTML = posts.map(post => `
+          <div class="post">
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            ${post.imageUrl ? `<img src="${post.imageUrl}" alt="Post Image">` : ''}
+            <p><small>Posted on ${new Date(post.createdAt).toLocaleString()}</small></p>
+          </div>
+        `).join('');
+      }
+      fetchPosts();
+    </script>
+  </div>
+</body>
+</html>
